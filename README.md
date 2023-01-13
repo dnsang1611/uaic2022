@@ -1,9 +1,10 @@
 # uaic2022
 ## 1. Create container
 #### DBNetpp:
-docker run --mount type=bind,source={path/to/uaic2022_submit},target=/workspace/ --name Hermes_uaic2022_sangdn_dpnetpp -it --gpus all --cpus 20 --shm-size=2gb  21522542/mmocr_hermes:v1
+`docker run --mount type=bind,source={path/to/uaic2022_submit},target=/workspace/ --name Hermes_uaic2022_sangdn_dpnetpp -it --gpus all --cpus 20 --shm-size=2gb  21522542/mmocr_hermes:v1`
 #### PARSEQ:
-docker run --mount type=bind,source={path/to/uaic2022_submit},target=/workspace/ --name Hermes_uaic2022_sangdn_parseq -it --gpus all --cpus 20 --shm-size=2gb  21522542/parseq_hermes:v1
+`docker run --mount type=bind,source={path/to/uaic2022_submit},target=/workspace/ --name Hermes_uaic2022_sangdn_parseq -it --gpus all --cpus 20 --shm-size=2gb  21522542/parseq_hermes:v1`
+
 If you don’t want to train models, you can go straight to 6th section to infer
 
 ## 2. Prepare dataset
@@ -20,8 +21,8 @@ python tools/create_lmdb_dataset.py data/cropped-images/ val_gt_file.txt val/sin
 		After that, we will see structure like this:
 
 ## 3. Train DBNetpp:
-Download pretrained model on English: https://download.openmmlab.com/mmocr/textdet/dbnet/dbnetpp_r50dcnv2_fpnc_1200e_icdar2015-20220502-d7a76fff.pth
-Train: In dbnetpp container, cd /workspace/mmocr
+- Download pretrained model on English: https://download.openmmlab.com/mmocr/textdet/dbnet/dbnetpp_r50dcnv2_fpnc_1200e_icdar2015-20220502-d7a76fff.pth
+- Train: In dbnetpp container, cd /workspace/mmocr
 Single GPU:
 CUDA_VISIBLE_DEVICES=0 python tools/train.py configs/textdet/dbnetpp/dbnetpp_r50dcnv2_fpnc_1200e_icdar2015.py --work-dir {work-dir} --load-from {path/to/pretrained/model}
 Multiple GPU:
