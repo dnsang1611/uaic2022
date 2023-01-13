@@ -1,30 +1,25 @@
 # uaic2022
-Download source code:
-Link: https://drive.google.com/file/d/11q8L0naxTugNvsrxbjEiquaotmvXpUhM/view?usp=share_link
-After unzipping, you will see a folder named uaic2022_submit
-Create container
-DBNetpp:
+## 1. Create container
+#### DBNetpp:
 docker run --mount type=bind,source={path/to/uaic2022_submit},target=/workspace/ --name Hermes_uaic2022_sangdn_dpnetpp -it --gpus all --cpus 20 --shm-size=2gb  21522542/mmocr_hermes:v1
-PARSEQ:
+#### PARSEQ:
 docker run --mount type=bind,source={path/to/uaic2022_submit},target=/workspace/ --name Hermes_uaic2022_sangdn_parseq -it --gpus all --cpus 20 --shm-size=2gb  21522542/parseq_hermes:v1
 If you don’t want to train models, you can go straight to 6th section to infer
 
-Prepare dataset
-Overview:
+## 2. Prepare dataset
+### Overview:
 uaic2022_training_data_dbnetpp: includes preprocessed data
 uaic2022_training_data_parseq: includes preprocessed data and augmented data (images with id >= 5000 are augmented images)
-Convert labels:
-DBNetpp: we need to convert original labels to COCO format. With mmocr/convertBTC2CoCo.py file, we created instances_test.json and instances_train.json which follow the COCO format.
-
-PARSEQ: 
+### Convert labels:
+#### DBNetpp: we need to convert original labels to COCO format. With mmocr/convertBTC2CoCo.py file, we created instances_test.json and instances_train.json which follow the COCO format.
+#### PARSEQ: 
 we need to convert labels and images to mdb.file. To do this, run following commands in order
 python prepare_data_for_mdb.py
 python tools/create_lmdb_dataset.py data/cropped-images/ train_gt_file.txt train/sin_hw
 python tools/create_lmdb_dataset.py data/cropped-images/ val_gt_file.txt val/sin_hw
 		After that, we will see structure like this:
 
-
-Train DBNetpp:
+## 3. Train DBNetpp:
 Download pretrained model on English: https://download.openmmlab.com/mmocr/textdet/dbnet/dbnetpp_r50dcnv2_fpnc_1200e_icdar2015-20220502-d7a76fff.pth
 Train: In dbnetpp container, cd /workspace/mmocr
 Single GPU:
@@ -33,14 +28,14 @@ Multiple GPU:
 tools/dist_train.sh configs/textdet/dbnetpp/dbnetpp_r50dcnv2_fpnc_1200e_icdar2015.py dbnetpp {n_gpus} --load-from {path/to/pretrained/model/of/mmocr}
 Our checkpoints, log will be  saved folder {work-dir}
 
-Train PARSEQ: In parseq container, cd /workspace/parseq
+## 4. Train PARSEQ: In parseq container, cd /workspace/parseq
 Specify number of gpus: uaic2022_submit/parseq/configs/main.yaml → trainer → gpus
 Example: use 3 gpus to train
 Train: 	python3 train.py pretrained=parseq 
 Note: pretrained=parseq will load pretrained model from this link: https://github.com/baudm/parseq/releases/download/v1.0.0/parseq-bb5792a6.pt
 Our checkpoints, log will be saved in folder outputs
 
-Inference
+## 5. Inference
 In source code, we downloaded the private test. You can remove this folder and download again if you want
 Our pretrained models: We have 2 pretrained models placed in pretrained-models folder. These models are also available on google drive
 DBNetpp: 	https://drive.google.com/file/d/1nI9JH-6ND25TXxd_tcyQSUxsXJpb0aG3/view?usp=share_link
