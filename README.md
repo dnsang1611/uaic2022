@@ -20,7 +20,8 @@ python prepare_data_for_mdb.py
 python tools/create_lmdb_dataset.py data/cropped-images/ train_gt_file.txt train/sin_hw
 python tools/create_lmdb_dataset.py data/cropped-images/ val_gt_file.txt val/sin_hw
 		After that, we will see structure like this:
-
+### Our dataset: 
+https://drive.google.com/file/d/1HBKHq_KWKrQSauUQwthOoHSTVBqDQ5cp/view?usp=share_link
 ## 3. Train DBNetpp:
 - Download pretrained model on English: https://download.openmmlab.com/mmocr/textdet/dbnet/dbnetpp_r50dcnv2_fpnc_1200e_icdar2015-20220502-d7a76fff.pth
 - Train: In dbnetpp container, cd /workspace/mmocr
@@ -38,8 +39,7 @@ Our checkpoints, log will be  saved folder {work-dir}`
 - Our checkpoints, log will be saved in folder outputs
 
 ## 5. Inference
-- In source code, we downloaded the private test. You can remove this folder and download again if you want
-- Our pretrained models: We have 2 pretrained models placed in pretrained-models folder. These models are also available on google drive
+- Our pretrained models: available on google drive
 - DBNetpp: 	https://drive.google.com/file/d/1nI9JH-6ND25TXxd_tcyQSUxsXJpb0aG3/view?usp=share_link
 
 - PARSEQ: https://drive.google.com/file/d/1cWtdXBkHn6p-zMnF37B7DYdSDqAg47yl/view?usp=share_link
